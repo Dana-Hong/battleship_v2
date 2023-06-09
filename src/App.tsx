@@ -1,14 +1,9 @@
-import { generateRow, generateRows } from "./constants/coordinates";
-import Row from "./Row";
-
+import Board from "./components/Board";
 
 function App() {
-  console.log(generateRows());
   return (
     <div>
-      {generateRows().map(row => (
-        <Row row={row}/>
-      ))}
+      <Board />
     </div>
   )
 }
