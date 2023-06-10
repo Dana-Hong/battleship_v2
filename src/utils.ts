@@ -39,3 +39,32 @@ export const generateCoordinates = () => {
         ))
     ));
 }
+
+export const generateCoordinatesV2 = () => {
+    let coordinateIds = [];
+
+    for (let i = 0; i < Y_COORDINATES.length; i++) {
+        for (let j = 0; j < X_COORDINATES.length; j++) {
+            let coordinate = {
+                targeted: false,
+                occupied: false,
+                isLabel: false,
+                id: '' 
+            };
+
+            if (i === 0) {
+                coordinate.id = `${X_COORDINATES[j]}`;
+                coordinate.isLabel = true;
+            } else if (j === 0) {
+                coordinate.id = `${Y_COORDINATES[i]}`;
+                coordinate.isLabel = true;
+            } else {
+                coordinate.id = `${X_COORDINATES[j]}${Y_COORDINATES[i]}`;
+            }
+            
+            coordinateIds.push(coordinate);
+        }
+    }
+    
+    return coordinateIds;
+}

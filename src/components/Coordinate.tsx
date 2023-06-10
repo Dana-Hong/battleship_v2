@@ -1,19 +1,18 @@
 import { CoordinateType } from "../types";
 
-type CoordinateProps = CoordinateType & { handleClick: (id: string) => void }
+type CoordinateProps = CoordinateType & { onClick: (id: string) => void }
 
-const Coordinate = ({ x, y, id, targeted, occupied, handleClick }: CoordinateProps) => {
-    const label = id.length === 1 || id === '10';
+const Coordinate = ({ id, targeted, occupied, isLabel, onClick}: CoordinateProps) => {
 
     return (
         <div 
-            className={`${label ? 'bg-red-300' : ''} flex justify-center items-center border h-10 w-10`}
-            onClick={(e) => {
-                if (label) return;
-                handleClick(id);
+            className={`${isLabel ? 'bg-red-300' : ''} ${targeted ? 'bg:red-500' : ''} flex justify-center items-center border h-10 w-10`}
+            onClick={() => {
+                if (isLabel) return;
+                onClick(id);
             }}
         >
-           <span>{label && id}</span> 
+           <span>{isLabel && id}</span> 
         </div>
     )
 }

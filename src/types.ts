@@ -1,9 +1,8 @@
 export type CoordinateType = {
-    x: string;
-    y: string | null; 
     id: string;
     targeted: boolean; 
     occupied: boolean;
+    isLabel: boolean;
 }
 
 export type RowType = CoordinateType[];
