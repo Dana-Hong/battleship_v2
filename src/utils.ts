@@ -1,51 +1,13 @@
-import { X_COORDINATES, Y_COORDINATES } from "./constants/coordinates";
+import { X_COORDINATES, X_COORDINATES_MAP, Y_COORDINATES } from "./constants/coordinates";
+import { SHIP_LENGTH_MAP, SHIP_NAMES } from "./constants/ships";
+import { Fleet, ShipNames, X_COORDINATES_ENUM } from "./types";
 
-export const generateRowData = (y_coordinate: number) => {
-    let row: string[] = [];
-    if (y_coordinate === 0) {
-        row = X_COORDINATES.split('');
-        return row;
-    }
-
-    for (let i = 0; i < X_COORDINATES.length; i++) {
-        let coordinate = i === 0 ? `${y_coordinate}` : `${X_COORDINATES[i]}${y_coordinate}`;
-        row.push(coordinate);
-    }
-
-    return row;
-}
-
-export const generateRowsData = () => {
-    let rows = [];
-    for (let i = 0; i < Y_COORDINATES.length; i++) {
-        rows.push(generateRowData(i));
-    } 
-
-    return rows;
-}
-
-export const generateCoordinates = () => {
-    let initialCoordinates = generateRowsData();
-    
-    return initialCoordinates.map(row => (
-        row.map(coordinate => (
-            {
-                x: coordinate[0],
-                y: coordinate[1] ?? null,
-                id: coordinate,
-                targeted: false,
-                occupied: false,
-            }
-        ))
-    ));
-}
-
-export const generateCoordinatesV2 = () => {
-    let coordinateIds = [];
-
+export function generateCoordinates(fleetPosition: Fleet) {
+    const coordinateIds = [];
+    // const fleetPosition: Fleet = generateFleet();
     for (let i = 0; i < Y_COORDINATES.length; i++) {
         for (let j = 0; j < X_COORDINATES.length; j++) {
-            let coordinate = {
+            const coordinate = {
                 targeted: false,
                 occupied: false,
                 isLabel: false,
@@ -59,7 +21,9 @@ export const generateCoordinatesV2 = () => {
                 coordinate.id = `${Y_COORDINATES[i]}`;
                 coordinate.isLabel = true;
             } else {
-                coordinate.id = `${X_COORDINATES[j]}${Y_COORDINATES[i]}`;
+                const coordinateId = `${X_COORDINATES[j]}${Y_COORDINATES[i]}`;
+                coordinate.id = coordinateId; 
+                coordinate.occupied = fleetPosition.map(coordinate => coordinate.id).includes(coordinateId) ? true : false;
             }
             
             coordinateIds.push(coordinate);
@@ -67,4 +31,94 @@ export const generateCoordinatesV2 = () => {
     }
     
     return coordinateIds;
+}
+
+export function generateShip(ship: ShipNames, id: string, axis: string, fleet: Fleet) {
+    const potentialCoordinates = generatePotentialShipCoordinates(ship, id, axis);
+    const shipIntersectsFleet = new Set([
+        ...potentialCoordinates,
+        ...fleet.map(fleetCoordinate => fleetCoordinate.id)]).size < 17 ? true : false; 
+    const shipOverflowsBoard = SHIP_LENGTH_MAP[ship] !== potentialCoordinates.length
+    if (!shipOverflowsBoard && !shipIntersectsFleet) {
+        return {
+            name: ship,
+            position: [...potentialCoordinates],
+            destroyed: false
+        }
+    }
+    return;
+}
+
+export function generatePotentialShipCoordinates(ship: ShipNames, id: string, axis: string) {
+    const shipLength = SHIP_LENGTH_MAP[ship];
+    const potentialCoordinates = [];
+    const xCoordinate = id[0];
+    const yCoordinate = Number(id.slice(1));
+
+    if (axis === 'Y') {
+        for (let i = yCoordinate; i < yCoordinate + shipLength; i++) {
+           const coordinate = `${xCoordinate}${i}`;
+           if (Y_COORDINATES[i] < 10) potentialCoordinates.push(coordinate); 
+        } 
+    } else if (axis === 'X') {
+        const indexOfXCoordinate = X_COORDINATES.indexOf(xCoordinate); 
+        for (let i = indexOfXCoordinate; i < indexOfXCoordinate + shipLength; i++) {
+            const coordinate = `${X_COORDINATES[i]}${yCoordinate}`;
+            if (i < 10) potentialCoordinates.push(coordinate);
+        }
+    }
+
+    return potentialCoordinates;
+
+}
+
+function generateRandomIndex() {
+    return Math.floor(Math.random() * 10);
+}
+
+function generateRandomAxis() {
+    return Math.floor(Math.random() * 2) === 0 ? 'X' : 'Y';
+}
+
+function generateRandomCoordinateId() {
+    const validXCoordinates = X_COORDINATES.slice(1);
+    const validYCoordinates = Y_COORDINATES.slice(1);
+    const randomXIndex = generateRandomIndex();
+    const randomYIndex = generateRandomIndex();
+    
+    return `${validXCoordinates[randomXIndex]}${validYCoordinates[randomYIndex]}`;
+    
+}
+
+export function generateFleet() {
+    let currentIndex = 0;
+    let fleetPosition: Fleet = [];
+
+    while (fleetPosition.length < 17) {
+        const currentShip = SHIP_NAMES[currentIndex];
+        const randomId = generateRandomCoordinateId();
+        const randomAxis = generateRandomAxis();
+        const potentialCoordinates = generatePotentialShipCoordinates(currentShip, randomId, randomAxis);
+
+        const currFleetPosition = fleetPosition.map(fleetCoordinate => fleetCoordinate.id);
+        const shipIntersectsFleet = potentialCoordinates
+            .map(coordinate => currFleetPosition
+            .includes(coordinate))
+            .includes(true);
+
+        if (potentialCoordinates.length === SHIP_LENGTH_MAP[currentShip] && !shipIntersectsFleet) {
+            const coordinates = [...potentialCoordinates]
+                .map(coordinateId => ({ 
+                    id: coordinateId,
+                    ship: currentShip,
+                    targeted: false
+                }));
+
+            
+            fleetPosition = [...fleetPosition, ...coordinates]; 
+            currentIndex++;
+        }
+    }
+
+    return fleetPosition;
 }
