@@ -1,10 +1,9 @@
 import { X_COORDINATES, X_COORDINATES_MAP, Y_COORDINATES } from "./constants/coordinates";
 import { SHIP_LENGTH_MAP, SHIP_NAMES } from "./constants/ships";
-import { Fleet, ShipNames, X_COORDINATES_ENUM } from "./types";
+import { Axis, Fleet, ShipNames, X_COORDINATES_ENUM } from "./types";
 
-export function generateCoordinates(fleetPosition: Fleet) {
+export function generateCoordinates(fleetPosition?: Fleet) {
     const coordinateIds = [];
-    // const fleetPosition: Fleet = generateFleet();
     for (let i = 0; i < Y_COORDINATES.length; i++) {
         for (let j = 0; j < X_COORDINATES.length; j++) {
             const coordinate = {
@@ -23,7 +22,9 @@ export function generateCoordinates(fleetPosition: Fleet) {
             } else {
                 const coordinateId = `${X_COORDINATES[j]}${Y_COORDINATES[i]}`;
                 coordinate.id = coordinateId; 
-                coordinate.occupied = fleetPosition.map(coordinate => coordinate.id).includes(coordinateId) ? true : false;
+                coordinate.occupied =  fleetPosition 
+                ? fleetPosition.map(coordinate => coordinate.id).includes(coordinateId) ? true : false
+                : false
             }
             
             coordinateIds.push(coordinate);
@@ -33,8 +34,8 @@ export function generateCoordinates(fleetPosition: Fleet) {
     return coordinateIds;
 }
 
-export function generateShip(ship: ShipNames, id: string, axis: string, fleet: Fleet) {
-    const potentialCoordinates = generatePotentialShipCoordinates(ship, id, axis);
+export function generateShip(ship: ShipNames, id: string, axis: Axis, fleet: Fleet) {
+    const potentialCoordinates = generatePotentialShipCoordinates(ship, id, axis, fleet);
     const shipIntersectsFleet = new Set([
         ...potentialCoordinates,
         ...fleet.map(fleetCoordinate => fleetCoordinate.id)]).size < 17 ? true : false; 
@@ -49,7 +50,7 @@ export function generateShip(ship: ShipNames, id: string, axis: string, fleet: F
     return;
 }
 
-export function generatePotentialShipCoordinates(ship: ShipNames, id: string, axis: string) {
+export function generatePotentialShipCoordinates(ship: ShipNames, id: string, axis: Axis, fleet: Fleet) {
     const shipLength = SHIP_LENGTH_MAP[ship];
     const potentialCoordinates = [];
     const xCoordinate = id[0];
@@ -58,13 +59,15 @@ export function generatePotentialShipCoordinates(ship: ShipNames, id: string, ax
     if (axis === 'Y') {
         for (let i = yCoordinate; i < yCoordinate + shipLength; i++) {
            const coordinate = `${xCoordinate}${i}`;
-           if (Y_COORDINATES[i] < 10) potentialCoordinates.push(coordinate); 
+           const shipIntersectsFleet = fleet.map(fleetCoordinate => fleetCoordinate.id).includes(coordinate);
+           if (Y_COORDINATES[i] < 11 && !shipIntersectsFleet) potentialCoordinates.push(coordinate); 
         } 
     } else if (axis === 'X') {
         const indexOfXCoordinate = X_COORDINATES.indexOf(xCoordinate); 
         for (let i = indexOfXCoordinate; i < indexOfXCoordinate + shipLength; i++) {
             const coordinate = `${X_COORDINATES[i]}${yCoordinate}`;
-            if (i < 10) potentialCoordinates.push(coordinate);
+            const shipIntersectsFleet = fleet.map(fleetCoordinate => fleetCoordinate.id).includes(coordinate);
+            if (i < 11 && !shipIntersectsFleet) potentialCoordinates.push(coordinate);
         }
     }
 
@@ -98,7 +101,7 @@ export function generateFleet() {
         const currentShip = SHIP_NAMES[currentIndex];
         const randomId = generateRandomCoordinateId();
         const randomAxis = generateRandomAxis();
-        const potentialCoordinates = generatePotentialShipCoordinates(currentShip, randomId, randomAxis);
+        const potentialCoordinates = generatePotentialShipCoordinates(currentShip, randomId, randomAxis, fleetPosition);
 
         const currFleetPosition = fleetPosition.map(fleetCoordinate => fleetCoordinate.id);
         const shipIntersectsFleet = potentialCoordinates

@@ -1,3 +1,5 @@
+export type Axis = 'X' | 'Y';
+
 type CoordinateId = string;
 
 export type FleetCoordinate = {

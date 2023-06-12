@@ -1,9 +1,13 @@
 import Board from "./components/Board";
+import ShipSelector from "./ShipSelector"; 
+import Game from "./components/Game";
 
 function App() {
   return (
     <div>
-      <Board />
+      <Game />
+      {/* <ShipSelector />
+      <Board /> */}
     </div>
   )
 }

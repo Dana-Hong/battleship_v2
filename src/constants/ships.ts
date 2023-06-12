@@ -5,7 +5,7 @@ export const SHIP_LENGTH_MAP: ShipLengthMap = {
     battleship: 4,
     destroyer: 3,
     submarine: 3,
-    patrolBoat: 2
+    patrolboat: 2
 }
 
-export const SHIP_NAMES: ShipNames[] = ['carrier', 'battleship', 'destroyer', 'submarine', 'patrolBoat'];
+export const SHIP_NAMES: ShipNames[] = ['carrier', 'battleship', 'destroyer', 'submarine', 'patrolboat'];
