@@ -24,6 +24,7 @@ const Game = () => {
                 fleet={computerFleet} 
                 setFleet={setComputerFleet}
                 coordinates={computerCoordinates}  
+                isPlayerCoordinate={true}
                 setCoordinates={setComputerCoordinates}
                 axis={axis}
                 ship={ship}

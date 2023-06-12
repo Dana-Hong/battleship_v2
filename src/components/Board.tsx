@@ -7,13 +7,21 @@ type BoardProps = {
   fleet: Fleet;
   setFleet: (fleet: Fleet) => void;
   coordinates: CoordinateType[];
+  isPlayerCoordinate: boolean;
   setCoordinates: React.Dispatch<React.SetStateAction<CoordinateType[]>>;
   axis: Axis;
   ship: ShipNames;
-
 };
 
-const Board = ({ fleet, setFleet, coordinates, setCoordinates, axis, ship }: BoardProps) => {
+const Board = ({
+  fleet,
+  setFleet,
+  coordinates,
+  isPlayerCoordinate,
+  setCoordinates,
+  axis,
+  ship,
+}: BoardProps) => {
   // const [fleet, setFleet] = useState(generateFleet);
   // const [coordinates, setCoordinates] = useState(generateCoordinates(fleet));
   // function generateUIRows() {
@@ -70,24 +78,36 @@ const Board = ({ fleet, setFleet, coordinates, setCoordinates, axis, ship }: Boa
     );
   }
 
-  
   function handleHover(ship: ShipNames, id: string, axis: Axis, fleet: Fleet) {
     const highlightedCoordinates = generatePotentialShipCoordinates(ship, id, axis, fleet);
+    setCoordinates((prevCoordinates) =>
+      prevCoordinates.map((coordinate) =>
+        highlightedCoordinates.includes(coordinate.id)
+          ? {
+              ...coordinate,
+              hovered: true,
+            }
+          : {
+              ...coordinate,
+              hovered: false,
+            }
+      )
+    );
     console.log(highlightedCoordinates);
-
   }
 
   function generateUIRows() {
     return coordinates.map((coordinate) => (
-      <Coordinate 
-        key={coordinate.id} 
+      <Coordinate
+        key={coordinate.id}
         axis={axis}
-        {...coordinate} 
+        {...coordinate}
         fleet={fleet}
+        isPlayerCoordinate={isPlayerCoordinate}
         ship={ship}
-        onClick={handleClick} 
-        onMouseEnter={handleHover} />
-
+        onClick={handleClick}
+        onMouseEnter={handleHover}
+      />
     ));
   }
   function handleClick(id: string) {

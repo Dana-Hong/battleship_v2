@@ -7,12 +7,35 @@ type CoordinateEventHandlers = {
     onMouseEnter: (ship: ShipNames, id: string, axis: Axis, fleet: Fleet) => void;
 }
 
-type CoordinateProps = CoordinateType & CoordinateEventHandlers & { ship: ShipNames, axis: Axis, fleet: Fleet };  
+type CoordinateProps = CoordinateType & CoordinateEventHandlers & {
+    isPlayerCoordinate: boolean,
+    ship: ShipNames,
+    axis: Axis,
+    fleet: Fleet
+};  
 
-const Coordinate = ({ axis, fleet, id, targeted, occupied, isLabel, ship, onClick, onMouseEnter }: CoordinateProps) => {
+const Coordinate = ({ 
+    axis,
+    fleet,
+    hovered,
+    id,
+    isPlayerCoordinate,
+    targeted,
+    occupied,
+    isLabel,
+    ship,
+    onClick,
+    onMouseEnter }: CoordinateProps) => {
+    function generateCoordinateStyles() {
+        if (isLabel) return 'bg-red-300';
+        if (occupied && isPlayerCoordinate) return 'bg-gray-600';
+        if (occupied && hovered) return 'bg-red-500';
+        if (hovered) return 'bg-green-500';
+    }
+
     return (
         <div 
-            className={`${isLabel ? 'bg-red-300' : ''} ${occupied ? 'bg-gray-600' : ''} flex justify-center items-center border h-10 w-10 cursor-pointer`}
+            className={`${generateCoordinateStyles()} flex justify-center items-center border h-10 w-10 cursor-pointer`}
             onClick={() => {
                 if (isLabel) return;
                 onClick(id);

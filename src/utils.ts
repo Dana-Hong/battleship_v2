@@ -1,16 +1,17 @@
 import { X_COORDINATES, X_COORDINATES_MAP, Y_COORDINATES } from "./constants/coordinates";
 import { SHIP_LENGTH_MAP, SHIP_NAMES } from "./constants/ships";
-import { Axis, Fleet, ShipNames, X_COORDINATES_ENUM } from "./types";
+import { Axis, CoordinateType, Fleet, ShipNames, X_COORDINATES_ENUM } from "./types";
 
 export function generateCoordinates(fleetPosition?: Fleet) {
     const coordinateIds = [];
     for (let i = 0; i < Y_COORDINATES.length; i++) {
         for (let j = 0; j < X_COORDINATES.length; j++) {
-            const coordinate = {
+            const coordinate: CoordinateType = {
                 targeted: false,
                 occupied: false,
                 isLabel: false,
-                id: '' 
+                id: '',
+                hovered: false,
             };
 
             if (i === 0) {
@@ -52,7 +53,7 @@ export function generateShip(ship: ShipNames, id: string, axis: Axis, fleet: Fle
 
 export function generatePotentialShipCoordinates(ship: ShipNames, id: string, axis: Axis, fleet: Fleet) {
     const shipLength = SHIP_LENGTH_MAP[ship];
-    const potentialCoordinates = [];
+    const potentialCoordinates = []
     const xCoordinate = id[0];
     const yCoordinate = Number(id.slice(1));
 

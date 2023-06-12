@@ -18,6 +18,12 @@ export type CoordinateType = {
     targeted: boolean; 
     occupied: boolean;
     isLabel: boolean;
+    hovered: boolean;
+}
+
+export type PotentialCoordinates = {
+    valid: boolean;
+    coordinates: string[];
 }
 
 export type RowType = CoordinateType[];
