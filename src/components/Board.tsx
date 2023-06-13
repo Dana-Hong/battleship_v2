@@ -8,9 +8,10 @@ type BoardProps = {
   setFleet: (fleet: Fleet) => void;
   coordinates: CoordinateType[];
   isPlayerCoordinate: boolean;
+  handleShipPlacement?: (ship: ShipNames, id: string, axis: Axis, fleet: Fleet) => void; 
   setCoordinates: React.Dispatch<React.SetStateAction<CoordinateType[]>>;
-  axis: Axis;
-  ship: ShipNames;
+  axis?: Axis;
+  ship?: ShipNames;
 };
 
 const Board = ({
@@ -18,6 +19,7 @@ const Board = ({
   setFleet,
   coordinates,
   isPlayerCoordinate,
+  handleShipPlacement,
   setCoordinates,
   axis,
   ship,
@@ -120,17 +122,34 @@ const Board = ({
 
   useEffect(() => {
     console.log(coordinates)
+    console.log(fleet)
   })  
 
   function generateUIRows() {
+    if (axis && ship) {
+
+      return coordinates.map((coordinate) => (
+        <Coordinate
+          key={coordinate.id}
+          axis={axis}
+          {...coordinate}
+          fleet={fleet}
+          isPlayerCoordinate={isPlayerCoordinate}
+          onShipPlacement={handleShipPlacement}
+          ship={ship}
+          onClick={handleClick}
+          onMouseEnter={handleHover}
+        />
+      ));
+
+    }
     return coordinates.map((coordinate) => (
       <Coordinate
         key={coordinate.id}
-        axis={axis}
         {...coordinate}
         fleet={fleet}
         isPlayerCoordinate={isPlayerCoordinate}
-        ship={ship}
+        onShipPlacement={handleShipPlacement}
         onClick={handleClick}
         onMouseEnter={handleHover}
       />

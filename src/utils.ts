@@ -1,4 +1,8 @@
-import { X_COORDINATES, X_COORDINATES_MAP, Y_COORDINATES } from "./constants/coordinates";
+import {
+  X_COORDINATES,
+  X_COORDINATES_MAP,
+  Y_COORDINATES,
+} from "./constants/coordinates";
 import { SHIP_LENGTH_MAP, SHIP_NAMES } from "./constants/ships";
 import {
   Axis,
@@ -32,7 +36,9 @@ export function generateCoordinates(fleetPosition?: Fleet) {
         const coordinateId = `${X_COORDINATES[j]}${Y_COORDINATES[i]}`;
         coordinate.id = coordinateId;
         coordinate.occupied = fleetPosition
-          ? fleetPosition.map((coordinate) => coordinate.id).includes(coordinateId)
+          ? fleetPosition
+              .map((coordinate) => coordinate.id)
+              .includes(coordinateId)
             ? true
             : false
           : false;
@@ -45,24 +51,35 @@ export function generateCoordinates(fleetPosition?: Fleet) {
   return coordinateIds;
 }
 
-export function generateShip(ship: ShipNames, id: string, axis: Axis, fleet: Fleet) {
-  const potentialCoordinates = generatePotentialShipCoordinates(ship, id, axis, fleet);
-  const shipIntersectsFleet =
-    new Set([
-      ...potentialCoordinates.coordinates,
-      ...fleet.map((fleetCoordinate) => fleetCoordinate.id),
-    ]).size < 17
-      ? true
-      : false;
-  const shipOverflowsBoard = SHIP_LENGTH_MAP[ship] !== potentialCoordinates.coordinates.length;
-  if (!shipOverflowsBoard && !shipIntersectsFleet) {
+export function generateShip(
+  ship: ShipNames,
+  id: string,
+  axis: Axis,
+  fleet: Fleet
+) {
+  const potentialCoordinates = generatePotentialShipCoordinates(
+    ship,
+    id,
+    axis,
+    fleet
+  );
+  // const shipIntersectsFleet =
+  //   new Set([
+  //     ...potentialCoordinates.coordinates,
+  //     ...fleet.map((fleetCoordinate) => fleetCoordinate.id),
+  //   ]).size < 17
+  //     ? true
+  //     : false;
+  // const shipOverflowsBoard = SHIP_LENGTH_MAP[ship] !== potentialCoordinates.coordinates.length;
+  // if (!shipOverflowsBoard && !shipIntersectsFleet) {
+  if (potentialCoordinates.valid) {
     return {
       name: ship,
       position: [...potentialCoordinates.coordinates],
       destroyed: false,
     };
   }
-  return;
+  return null;
 }
 
 export function generatePotentialShipCoordinates(
@@ -83,7 +100,8 @@ export function generatePotentialShipCoordinates(
     for (let i = yCoordinate; i < yCoordinate + shipLength; i++) {
       const coordinate = `${xCoordinate}${i}`;
       //    const shipIntersectsFleet = fleet.map(fleetCoordinate => fleetCoordinate.id).includes(coordinate);
-      if (Y_COORDINATES[i] < 11) potentialCoordinates.coordinates.push(coordinate);
+      if (Y_COORDINATES[i] < 11)
+        potentialCoordinates.coordinates.push(coordinate);
     }
   } else if (axis === "X") {
     const indexOfXCoordinate = X_COORDINATES.indexOf(xCoordinate);
@@ -94,11 +112,16 @@ export function generatePotentialShipCoordinates(
     }
   }
 
-  potentialCoordinates.valid = fleet
-    .map((fleetCoordinate) =>
-      potentialCoordinates.coordinates.includes(fleetCoordinate.id) ? true : false
-    )
-    .includes(true) || potentialCoordinates.coordinates.length !== shipLength ? false : true;
+  potentialCoordinates.valid =
+    fleet
+      .map((fleetCoordinate) =>
+        potentialCoordinates.coordinates.includes(fleetCoordinate.id)
+          ? true
+          : false
+      )
+      .includes(true) || potentialCoordinates.coordinates.length !== shipLength
+      ? false
+      : true;
 
   return potentialCoordinates;
 }
@@ -135,20 +158,25 @@ export function generateFleet() {
       fleetPosition
     );
 
-    const currFleetPosition = fleetPosition.map((fleetCoordinate) => fleetCoordinate.id);
+    const currFleetPosition = fleetPosition.map(
+      (fleetCoordinate) => fleetCoordinate.id
+    );
     const shipIntersectsFleet = potentialCoordinates.coordinates
       .map((coordinate) => currFleetPosition.includes(coordinate))
       .includes(true);
 
     if (
-      potentialCoordinates.coordinates.length === SHIP_LENGTH_MAP[currentShip] &&
+      potentialCoordinates.coordinates.length ===
+        SHIP_LENGTH_MAP[currentShip] &&
       !shipIntersectsFleet
     ) {
-      const coordinates = [...potentialCoordinates.coordinates].map((coordinateId) => ({
-        id: coordinateId,
-        ship: currentShip,
-        targeted: false,
-      }));
+      const coordinates = [...potentialCoordinates.coordinates].map(
+        (coordinateId) => ({
+          id: coordinateId,
+          ship: currentShip,
+          targeted: false,
+        })
+      );
 
       fleetPosition = [...fleetPosition, ...coordinates];
       currentIndex++;

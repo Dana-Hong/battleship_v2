@@ -4,13 +4,14 @@ import FireIcon from "../assets/FireIcon";
 
 type CoordinateEventHandlers = { 
     onClick: (id: string) => void;
+    onShipPlacement?: (ship: ShipNames, id: string, axis: Axis, fleet: Fleet) => void;
     onMouseEnter: (ship: ShipNames, id: string, axis: Axis, fleet: Fleet) => void;
 }
 
 type CoordinateProps = CoordinateType & CoordinateEventHandlers & {
     isPlayerCoordinate: boolean;
-    ship: ShipNames;
-    axis: Axis;
+    ship?: ShipNames;
+    axis?: Axis;
     fleet: Fleet;
 };  
 
@@ -26,6 +27,7 @@ const Coordinate = ({
     isLabel,
     ship,
     onClick,
+    onShipPlacement,
     onMouseEnter }: CoordinateProps) => {
     function generateCoordinateStyles() {
         if (isLabel) return 'bg-blue-500';
@@ -39,11 +41,17 @@ const Coordinate = ({
             className={`cursor-pointer ${generateCoordinateStyles()} flex justify-center items-center border h-10 w-10 `}
             onClick={() => {
                 if (isLabel) return;
-                onClick(id);
+                if (axis && ship && onShipPlacement) {
+                    onShipPlacement(ship, id, axis, fleet);
+                } else {
+                    onClick(id);
+                }
             }}
             onMouseEnter={() => { 
                 if (isLabel) return;
-                onMouseEnter(ship, id, axis, fleet);
+                if (axis && ship) {
+                    onMouseEnter(ship, id, axis, fleet);
+                }
             }}
         >
             {(targeted && !occupied) && <TargetedIcon className="h-4 w-4 fill-gray-500"/>}
