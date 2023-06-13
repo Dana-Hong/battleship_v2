@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { generateCoordinates, generateFleet } from "../utils";
+import AxisSelector from "./AxisSelector";
 import Board from "./Board";
 import { Axis, Fleet, ShipNames } from "../types";
+import ShipSelector from "./ShipSelector";
 
 const Game = () => {
     const [computerFleet, setComputerFleet] = useState(generateFleet);
@@ -17,6 +19,13 @@ const Game = () => {
     }
 
     // const winner = calculateWinner();
+    const handleShipSelect = (ship: ShipNames) => {
+        setShip(ship);
+    }
+
+    const handleAxisSelect = (axis: Axis) => {
+        setAxis(axis);
+    }
     
     return (
         <div>
@@ -29,6 +38,8 @@ const Game = () => {
                 axis={axis}
                 ship={ship}
             />
+            <AxisSelector onAxisSelect={handleAxisSelect} />
+            <ShipSelector onShipSelect={handleShipSelect} />
             {/* <Board fleet={[]} coordinates={playerCoordinates} /> */}
         </div>
     )

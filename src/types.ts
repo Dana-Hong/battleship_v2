@@ -1,5 +1,7 @@
 export type Axis = 'X' | 'Y';
 
+export type ButtonHandler<T> = (arg: T) => void;
+
 type CoordinateId = string;
 
 export type FleetCoordinate = {

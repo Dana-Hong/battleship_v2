@@ -1,5 +1,5 @@
 import Board from "./components/Board";
-import ShipSelector from "./ShipSelector"; 
+import ShipSelector from "./components/ShipSelector"; 
 import Game from "./components/Game";
 
 function App() {
