@@ -8,10 +8,10 @@ type CoordinateEventHandlers = {
 }
 
 type CoordinateProps = CoordinateType & CoordinateEventHandlers & {
-    isPlayerCoordinate: boolean,
-    ship: ShipNames,
-    axis: Axis,
-    fleet: Fleet
+    isPlayerCoordinate: boolean;
+    ship: ShipNames;
+    axis: Axis;
+    fleet: Fleet;
 };  
 
 const Coordinate = ({ 
@@ -19,6 +19,7 @@ const Coordinate = ({
     fleet,
     hovered,
     id,
+    isInvalidPlacement,
     isPlayerCoordinate,
     targeted,
     occupied,
@@ -27,15 +28,15 @@ const Coordinate = ({
     onClick,
     onMouseEnter }: CoordinateProps) => {
     function generateCoordinateStyles() {
-        if (isLabel) return 'bg-red-300';
-        if (occupied && isPlayerCoordinate) return 'bg-gray-600';
-        if (occupied && hovered) return 'bg-red-500';
+        if (isLabel) return 'bg-blue-500';
+        if (isInvalidPlacement) return 'bg-red-500 cursor-not-allowed';
         if (hovered) return 'bg-green-500';
+        if (occupied && isPlayerCoordinate) return 'bg-gray-600';
     }
 
     return (
         <div 
-            className={`${generateCoordinateStyles()} flex justify-center items-center border h-10 w-10 cursor-pointer`}
+            className={`cursor-pointer ${generateCoordinateStyles()} flex justify-center items-center border h-10 w-10 `}
             onClick={() => {
                 if (isLabel) return;
                 onClick(id);

@@ -80,21 +80,47 @@ const Board = ({
 
   function handleHover(ship: ShipNames, id: string, axis: Axis, fleet: Fleet) {
     const highlightedCoordinates = generatePotentialShipCoordinates(ship, id, axis, fleet);
-    setCoordinates((prevCoordinates) =>
-      prevCoordinates.map((coordinate) =>
-        highlightedCoordinates.includes(coordinate.id)
-          ? {
-              ...coordinate,
-              hovered: true,
-            }
-          : {
-              ...coordinate,
-              hovered: false,
-            }
-      )
-    );
+    console.log(highlightedCoordinates.valid);
+    console.log(highlightedCoordinates.coordinates);
+    if (!highlightedCoordinates.valid) {
+      setCoordinates((prevCoordinates) =>
+        prevCoordinates.map((coordinate) =>
+          highlightedCoordinates.coordinates.includes(coordinate.id)
+            ? {
+                ...coordinate,
+                isInvalidPlacement: true,
+                hovered: false
+              }
+            : {
+                ...coordinate,
+                isInvalidPlacement: false,
+                hovered: false
+              }
+        )
+      );
+    } else {
+      setCoordinates((prevCoordinates) =>
+        prevCoordinates.map((coordinate) =>
+          highlightedCoordinates.coordinates.includes(coordinate.id)
+            ? {
+                ...coordinate,
+                hovered: true,
+                isInvalidPlacement: false
+              }
+            : {
+                ...coordinate,
+                hovered: false,
+                isInvalidPlacement: false
+              }
+        )
+      );
+    }
     console.log(highlightedCoordinates);
   }
+
+  useEffect(() => {
+    console.log(coordinates)
+  })  
 
   function generateUIRows() {
     return coordinates.map((coordinate) => (
@@ -111,11 +137,6 @@ const Board = ({
     ));
   }
   function handleClick(id: string) {
-    // const updatedFleet = fleet.map(ship => (
-    //     ship.position.find(coordinate => coordinate === id)
-    //     ?
-    //     :
-    // ))
     setFleet(
       fleet.map((ship) =>
         ship.id === id
@@ -137,9 +158,6 @@ const Board = ({
       )
     );
   }
-
-  console.log(coordinates);
-  console.log(fleet);
 
   return (
     <>

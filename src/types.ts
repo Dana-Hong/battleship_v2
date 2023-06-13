@@ -18,6 +18,7 @@ export type CoordinateType = {
     targeted: boolean; 
     occupied: boolean;
     isLabel: boolean;
+    isInvalidPlacement: boolean;
     hovered: boolean;
 }
 
