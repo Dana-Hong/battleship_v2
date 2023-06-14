@@ -8,10 +8,8 @@ type BoardProps = {
   setFleet: (fleet: Fleet) => void;
   coordinates: CoordinateType[];
   isPlayerCoordinate: boolean;
-  handleShipPlacement?: (ship: ShipNames, id: string, axis: Axis, fleet: Fleet) => void; 
+  handleShipPlacement?: (ship: ShipNames, id: string, axis: Axis, fleet: Fleet) => void;
   setCoordinates: React.Dispatch<React.SetStateAction<CoordinateType[]>>;
-  axis?: Axis;
-  ship?: ShipNames;
 };
 
 const Board = ({
@@ -21,8 +19,6 @@ const Board = ({
   isPlayerCoordinate,
   handleShipPlacement,
   setCoordinates,
-  axis,
-  ship,
 }: BoardProps) => {
   // const [fleet, setFleet] = useState(generateFleet);
   // const [coordinates, setCoordinates] = useState(generateCoordinates(fleet));
@@ -62,100 +58,35 @@ const Board = ({
   /**
    * Generates new fleet positions and updates the Fleet and Coordinates states.
    */
-  function generateRandomFleet() {
-    const newFleet = generateFleet();
-    setFleet(newFleet);
+  // function generateRandomFleet() {
+  //   const newFleet = generateFleet();
+  //   setFleet(newFleet);
 
-    const fleetCoordinateIds = newFleet.map((fleetCoordinate) => fleetCoordinate.id);
+  //   const fleetCoordinateIds = newFleet.map((fleetCoordinate) => fleetCoordinate.id);
 
-    setCoordinates((prevCoordinates) =>
-      prevCoordinates.map((coordinate) =>
-        coordinate.occupied ? { ...coordinate, occupied: false } : coordinate
+  //   setCoordinates((prevCoordinates) =>
+  //     prevCoordinates.map((coordinate) =>
+  //       coordinate.occupied ? { ...coordinate, occupied: false } : coordinate
+  //     )
+  //   );
+  //   setCoordinates((prevCoordinates) =>
+  //     prevCoordinates.map((coordinate) =>
+  //       fleetCoordinateIds.includes(coordinate.id) ? { ...coordinate, occupied: true } : coordinate
+  //     )
+  //   );
+  // }
+
+
+  const handleHover = (id: string) => {
+    if (isPlayerCoordinate) return;
+    setCoordinates(
+      coordinates.map((coordinate) =>
+        coordinate.id === id ? { ...coordinate, hovered: true } : { ...coordinate, hovered: false }
       )
     );
-    setCoordinates((prevCoordinates) =>
-      prevCoordinates.map((coordinate) =>
-        fleetCoordinateIds.includes(coordinate.id) ? { ...coordinate, occupied: true } : coordinate
-      )
-    );
-  }
+  };
 
-  function handleHover(ship: ShipNames, id: string, axis: Axis, fleet: Fleet) {
-    const highlightedCoordinates = generatePotentialShipCoordinates(ship, id, axis, fleet);
-    console.log(highlightedCoordinates.valid);
-    console.log(highlightedCoordinates.coordinates);
-    if (!highlightedCoordinates.valid) {
-      setCoordinates((prevCoordinates) =>
-        prevCoordinates.map((coordinate) =>
-          highlightedCoordinates.coordinates.includes(coordinate.id)
-            ? {
-                ...coordinate,
-                isInvalidPlacement: true,
-                hovered: false
-              }
-            : {
-                ...coordinate,
-                isInvalidPlacement: false,
-                hovered: false
-              }
-        )
-      );
-    } else {
-      setCoordinates((prevCoordinates) =>
-        prevCoordinates.map((coordinate) =>
-          highlightedCoordinates.coordinates.includes(coordinate.id)
-            ? {
-                ...coordinate,
-                hovered: true,
-                isInvalidPlacement: false
-              }
-            : {
-                ...coordinate,
-                hovered: false,
-                isInvalidPlacement: false
-              }
-        )
-      );
-    }
-    console.log(highlightedCoordinates);
-  }
-
-  useEffect(() => {
-    console.log(coordinates)
-    console.log(fleet)
-  })  
-
-  function generateUIRows() {
-    if (axis && ship) {
-
-      return coordinates.map((coordinate) => (
-        <Coordinate
-          key={coordinate.id}
-          axis={axis}
-          {...coordinate}
-          fleet={fleet}
-          isPlayerCoordinate={isPlayerCoordinate}
-          onShipPlacement={handleShipPlacement}
-          ship={ship}
-          onClick={handleClick}
-          onMouseEnter={handleHover}
-        />
-      ));
-
-    }
-    return coordinates.map((coordinate) => (
-      <Coordinate
-        key={coordinate.id}
-        {...coordinate}
-        fleet={fleet}
-        isPlayerCoordinate={isPlayerCoordinate}
-        onShipPlacement={handleShipPlacement}
-        onClick={handleClick}
-        onMouseEnter={handleHover}
-      />
-    ));
-  }
-  function handleClick(id: string) {
+  const handleClick = (id: string) => {
     setFleet(
       fleet.map((ship) =>
         ship.id === id
@@ -176,20 +107,23 @@ const Board = ({
           : coordinate
       )
     );
-  }
+  };
 
-  return (
-    <>
-      <div className="grid grid-cols-11 max-w-[440px]">{generateUIRows()}</div>
-      <p
-        onClick={() => {
-          generateRandomFleet();
-        }}
-      >
-        Place for me
-      </p>
-    </>
-  );
+  const generateUIRows = () => {
+    return coordinates.map((coordinate) => (
+      <Coordinate
+        key={coordinate.id}
+        {...coordinate}
+        fleet={fleet}
+        isPlayerCoordinate={isPlayerCoordinate}
+        onShipPlacement={handleShipPlacement}
+        onClick={handleClick}
+        onMouseEnter={handleHover}
+      />
+    ));
+  };
+
+  return <div className="grid grid-cols-11 max-w-[440px]">{generateUIRows()}</div>;
 };
 
 export default Board;

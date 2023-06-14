@@ -10,8 +10,15 @@ type GameSetup = {
   fleet: Fleet;
   setPlayerCoordinates: React.Dispatch<React.SetStateAction<CoordinateType[]>>;
   setPlayerFleet: (fleet: Fleet) => void;
+  setGameStart: (gameStart: boolean) => void;
 };
-const GameSetup = ({ fleet, coordinates, setPlayerCoordinates, setPlayerFleet }: GameSetup) => {
+const GameSetup = ({
+  fleet,
+  coordinates,
+  setPlayerCoordinates,
+  setPlayerFleet,
+  setGameStart,
+}: GameSetup) => {
   const [currentAxis, setCurrentAxis] = useState<Axis>("X");
   const [currentShip, setCurrentShip] = useState<ShipNames>("carrier");
 
@@ -74,7 +81,19 @@ const GameSetup = ({ fleet, coordinates, setPlayerCoordinates, setPlayerFleet }:
       <p onClick={() => generateRandomFleet()}>Random Placement</p>
       <AxisSelector currentAxis={currentAxis} onClick={handleAxisSelect} />
       <ShipSelector currentShip={currentShip} onClick={handleShipSelect} />
-      {fleet.length === 17 && <p className="bg-emerald-600">Start Game</p>}
+      {fleet.length === 17 && (
+        <p
+          className="bg-emerald-600"
+          onClick={() => {
+            setPlayerCoordinates((prevCoordinates) =>
+              prevCoordinates.map((coordinate) => ({ ...coordinate, hovered: false }))
+            );
+            setGameStart(true);
+          }}
+        >
+          Start Game
+        </p>
+      )}
     </div>
   );
 };

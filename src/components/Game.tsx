@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { generateCoordinates, generateFleet, generateShip } from "../utils";
-import { Axis, CoordinateType, Fleet, ShipNames } from "../types";
+import Board from "./Board";
 import GameSetup from "./GameSetup";
+import { generateCoordinates, generateFleet, generateShip } from "../utils";
+import { CoordinateType, Fleet, } from "../types";
+import Coordinate from "./Coordinate";
 
 const Game = () => {
+  const [gameStart, setGameStart] = useState(false);
   const [computerFleet, setComputerFleet] = useState(generateFleet);
   const [computerCoordinates, setComputerCoordinates] = useState(
     generateCoordinates(computerFleet)
@@ -37,32 +40,34 @@ const Game = () => {
 
   return (
     <div>
-      <GameSetup
-        coordinates={playerCoordinates}
-        fleet={playerFleet}
-        setPlayerCoordinates={setPlayerCoordinates}
-        setPlayerFleet={setPlayerFleet}
-      />
-      {/* <Board
-        fleet={playerFleet}
-        setFleet={setPlayerFleet}
-        coordinates={playerCoordinates}
-        setCoordinates={setPlayerCoordinates}
-        isPlayerCoordinate={true}
-        handleShipPlacement={handleShipPlacement}
-        axis={axis}
-        ship={ship}
-      /> */}
-      {/* <Board 
-                fleet={computerFleet} 
-                setFleet={setComputerFleet}
-                coordinates={computerCoordinates}  
-                isPlayerCoordinate={true}
-                setCoordinates={setComputerCoordinates}
-                axis={axis}
-                ship={ship}
-            /> */}
-      {/* <Board fleet={[]} coordinates={playerCoordinates} /> */}
+      {!gameStart && (
+        <GameSetup
+          coordinates={playerCoordinates}
+          fleet={playerFleet}
+          setPlayerCoordinates={setPlayerCoordinates}
+          setPlayerFleet={setPlayerFleet}
+          setGameStart={setGameStart}
+        />
+      )}
+      {gameStart && 
+      
+      <div>
+        <Board 
+          coordinates={playerCoordinates}
+          fleet={playerFleet}
+          isPlayerCoordinate={true}
+          setCoordinates={setPlayerCoordinates}
+          setFleet={setPlayerFleet}
+        />
+        <Board 
+          coordinates={computerCoordinates}
+          fleet={computerFleet}
+          isPlayerCoordinate={false}
+          setCoordinates={setComputerCoordinates}
+          setFleet={setPlayerFleet}
+        />
+      </div>
+      }
     </div>
   );
 };
