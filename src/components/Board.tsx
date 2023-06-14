@@ -81,7 +81,7 @@ const Board = ({
     ));
   };
 
-  return <div className="grid grid-cols-11 max-w-[440px]">{generateUIRows()}</div>;
+  return <div className="grid grid-cols-11 min-[375px]:max-w-[220px] max-w-[440px]">{generateUIRows()}</div>;
 };
 
 export default Board;

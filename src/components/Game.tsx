@@ -34,7 +34,7 @@ const Game = () => {
   const winner = calculateWinner();
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col justify-center items-center">
       {!gameStart && (
         <GameSetup
           coordinates={playerCoordinates}

@@ -12,11 +12,12 @@ const ShipSelector = ({ currentShip, onClick }: ShipSelectorProps) => {
   };
 
   return (
-    <div>
-      <p>Select Ship</p>
-      <div className="flex">
+    <div className="w-full">
+      <p className="py-4 text-lg font-semibold text-center">Select Ship</p>
+      <div className="flex flex-col gap-3">
         <Button className={shipSelectButtonStyles("carrier")}>
           <button
+            className="w-full mx-auto"
             onClick={() => {
               onClick("carrier");
             }}
@@ -26,6 +27,7 @@ const ShipSelector = ({ currentShip, onClick }: ShipSelectorProps) => {
         </Button>
         <Button className={shipSelectButtonStyles("battleship")}>
           <button
+            className="w-full mx-auto"
             onClick={() => {
               onClick("battleship");
             }}
@@ -35,6 +37,7 @@ const ShipSelector = ({ currentShip, onClick }: ShipSelectorProps) => {
         </Button>
         <Button className={shipSelectButtonStyles("destroyer")}>
           <button
+            className="w-full mx-auto"
             onClick={() => {
               onClick("destroyer");
             }}
@@ -44,6 +47,7 @@ const ShipSelector = ({ currentShip, onClick }: ShipSelectorProps) => {
         </Button>
         <Button className={shipSelectButtonStyles("submarine")}>
           <button
+            className="w-full mx-auto"
             onClick={() => {
               onClick("submarine");
             }}
@@ -53,6 +57,7 @@ const ShipSelector = ({ currentShip, onClick }: ShipSelectorProps) => {
         </Button>
         <Button className={shipSelectButtonStyles("patrolboat")}>
           <button
+            className="w-full mx-auto"
             onClick={() => {
               onClick("patrolboat");
             }}

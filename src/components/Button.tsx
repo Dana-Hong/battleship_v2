@@ -10,7 +10,7 @@ const Button: React.FC<ButtonProps> = ({
   className,
 }: ButtonProps) => {
   return (
-    <div className={`inline-block border py-2 px-4 ${className}`}>{children}</div>
+    <div className={`font-medium border-2 tracking-wider border-t-neutral-700 border-x-neutral-700 border-b-neutral-900 bg-neutral-600 py-2 px-4 ${className ? className : ''} rounded-md`}>{children}</div>
   );
 };
 

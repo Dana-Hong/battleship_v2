@@ -75,7 +75,7 @@ const GameSetup = ({
   };
 
   return (
-    <div>
+    <div className="w-full max-w-7xl flex flex-col xl:flex-row items-center justify-evenly gap-8">
       <SetupBoard
         currentAxis={currentAxis}
         currentShip={currentShip}
@@ -85,23 +85,33 @@ const GameSetup = ({
         setCoordinates={setPlayerCoordinates}
         setFleet={setPlayerFleet}
       />
-      <p onClick={() => generateRandomFleet()}>Random Placement</p>
-      <AxisSelector currentAxis={currentAxis} onClick={handleAxisSelect} />
-      <ShipSelector currentShip={currentShip} onClick={handleShipSelect} />
-      {fleet.length === 17 && (
-        <Button className="bg-emerald-600">
-          <button
-            onClick={() => {
-              setPlayerCoordinates((prevCoordinates) =>
-                prevCoordinates.map((coordinate) => ({ ...coordinate, hovered: false }))
-              );
-              setGameStart(true);
-            }}
-          >
-            Start Game
-          </button>
-        </Button>
-      )}
+      <div className="flex flex-col gap-4 w-full min-[375px]:max-w-[352px] sm:max-w-[440px] lg:max-w-[528px]">
+        <div className="flex gap-6">
+          <div className="flex flex-col gap-3 grow">
+            <AxisSelector currentAxis={currentAxis} onClick={handleAxisSelect} />
+            <Button>
+              <button className="w-full" onClick={() => generateRandomFleet()}>
+                Random Placement
+              </button>
+            </Button>
+          </div>
+          <ShipSelector currentShip={currentShip} onClick={handleShipSelect} />
+        </div>
+          <Button className="max-w-xs mx-auto">
+            <button
+              className={`${fleet.length === 17 ? 'text-neutral-200': 'text-neutral-800'}`}
+              onClick={() => {
+                if (fleet.length !== 17) return; 
+                setPlayerCoordinates((prevCoordinates) =>
+                  prevCoordinates.map((coordinate) => ({ ...coordinate, hovered: false }))
+                );
+                setGameStart(true);
+              }}
+            >
+              Start Game
+            </button>
+          </Button>
+      </div>
     </div>
   );
 };

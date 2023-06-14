@@ -10,25 +10,30 @@ const AxisSelector = ({ currentAxis, onClick }: AxisSelectorProps) => {
   };
 
   return (
-    <div>
-      <Button className={axisSelectButtonStyles("Y")}>
-        <button
-          onClick={() => {
-            onClick("Y");
-          }}
-        >
-          Y Axis
-        </button>
-      </Button>
-      <Button className={axisSelectButtonStyles("X")}>
-        <button
-          onClick={() => {
-            onClick("X");
-          }}
-        >
-          X Axis
-        </button>
-      </Button>
+    <div className="w-full">
+      <p className="py-4 text-lg font-semibold text-center">Select Axis</p>
+      <div className="flex flex-col gap-3">
+        <Button className={`${axisSelectButtonStyles("Y")}`}>
+          <button
+            className="w-full mx-auto"
+            onClick={() => {
+              onClick("Y");
+            }}
+          >
+            Y Axis
+          </button>
+        </Button>
+        <Button className={`${axisSelectButtonStyles("X")}`}>
+          <button
+            className="w-full mx-auto"
+            onClick={() => {
+              onClick("X");
+            }}
+          >
+            X Axis
+          </button>
+        </Button>
+      </div>
     </div>
   );
 };
