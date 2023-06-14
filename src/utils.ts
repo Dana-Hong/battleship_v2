@@ -1,6 +1,5 @@
 import {
   X_COORDINATES,
-  X_COORDINATES_MAP,
   Y_COORDINATES,
 } from "./constants/coordinates";
 import { SHIP_LENGTH_MAP, SHIP_NAMES } from "./constants/ships";
@@ -10,7 +9,6 @@ import {
   Fleet,
   PotentialCoordinates,
   ShipNames,
-  X_COORDINATES_ENUM,
 } from "./types";
 
 export function generateCoordinates(fleetPosition?: Fleet) {
@@ -134,7 +132,7 @@ function generateRandomAxis() {
   return Math.floor(Math.random() * 2) === 0 ? "X" : "Y";
 }
 
-function generateRandomCoordinateId() {
+export function generateRandomCoordinateId() {
   const validXCoordinates = X_COORDINATES.slice(1);
   const validYCoordinates = Y_COORDINATES.slice(1);
   const randomXIndex = generateRandomIndex();

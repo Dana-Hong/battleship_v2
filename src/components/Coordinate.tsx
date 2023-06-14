@@ -13,10 +13,10 @@ type CoordinateProps = CoordinateType &
   CoordinateEventHandlers & {
     isPlayerCoordinate: boolean;
     fleet: Fleet;
+    winner?: string | null;
   };
 
 const Coordinate = ({
-  fleet,
   hovered,
   id,
   isInvalidPlacement,
@@ -24,6 +24,7 @@ const Coordinate = ({
   targeted,
   occupied,
   isLabel,
+  winner,
   onClick,
   onMouseEnter,
 }: CoordinateProps) => {
@@ -36,9 +37,9 @@ const Coordinate = ({
 
   return (
     <div
-      className={`cursor-pointer ${generateCoordinateStyles()} flex justify-center items-center border h-10 w-10 `}
+      className={`${!isPlayerCoordinate && !isLabel && "cursor-pointer"} ${generateCoordinateStyles()} flex justify-center items-center border h-10 w-10 `}
       onClick={() => {
-        if (isLabel) return;
+        if (isLabel || targeted || winner) return;
           onClick(id);
       }}
       onMouseEnter={() => {
@@ -47,7 +48,7 @@ const Coordinate = ({
       }}
     >
       {hovered && !isPlayerCoordinate && <TargetIcon className="absolute h-6 w-6 fill-red-600"/>}
-      {targeted && !occupied && <TargetedIcon className="h-4 w-4 fill-gray-500" />}
+      {targeted && !occupied && <TargetedIcon className="h-4 w-4 fill-neutral-100" />}
       {targeted && occupied && <FireIcon className="h-6 w-6 fill-red-500" />}
       <span>{isLabel && id}</span>
     </div>

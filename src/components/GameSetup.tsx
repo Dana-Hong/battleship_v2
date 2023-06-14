@@ -1,9 +1,16 @@
 import { useState } from "react";
+
+// Components
 import AxisSelector from "./AxisSelector";
+import Button from "./Button";
 import SetupBoard from "./SetupBoard";
 import ShipSelector from "./ShipSelector";
-import { Axis, CoordinateType, Fleet, ShipNames } from "../types";
+
+// utils
 import { generateCoordinates, generateFleet, generateShip } from "../utils";
+
+// types
+import { Axis, CoordinateType, Fleet, ShipNames } from "../types";
 
 type GameSetup = {
   coordinates: CoordinateType[];
@@ -82,17 +89,18 @@ const GameSetup = ({
       <AxisSelector currentAxis={currentAxis} onClick={handleAxisSelect} />
       <ShipSelector currentShip={currentShip} onClick={handleShipSelect} />
       {fleet.length === 17 && (
-        <p
-          className="bg-emerald-600"
-          onClick={() => {
-            setPlayerCoordinates((prevCoordinates) =>
-              prevCoordinates.map((coordinate) => ({ ...coordinate, hovered: false }))
-            );
-            setGameStart(true);
-          }}
-        >
-          Start Game
-        </p>
+        <Button className="bg-emerald-600">
+          <button
+            onClick={() => {
+              setPlayerCoordinates((prevCoordinates) =>
+                prevCoordinates.map((coordinate) => ({ ...coordinate, hovered: false }))
+              );
+              setGameStart(true);
+            }}
+          >
+            Start Game
+          </button>
+        </Button>
       )}
     </div>
   );

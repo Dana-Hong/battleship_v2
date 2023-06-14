@@ -1,13 +1,12 @@
 import { useState } from "react";
 import Board from "./Board";
 import GameSetup from "./GameSetup";
-import { generateCoordinates, generateFleet, generateShip } from "../utils";
-import { CoordinateType, Fleet, } from "../types";
-import Coordinate from "./Coordinate";
+import { generateCoordinates, generateFleet } from "../utils";
+import { CoordinateType, Fleet } from "../types";
 
 const Game = () => {
   const [gameStart, setGameStart] = useState(false);
-  const [computerFleet, setComputerFleet] = useState(generateFleet);
+  const [computerFleet] = useState(generateFleet);
   const [computerCoordinates, setComputerCoordinates] = useState(
     generateCoordinates(computerFleet)
   );
@@ -16,27 +15,23 @@ const Game = () => {
     generateCoordinates()
   );
 
-  // /**
-  //  * Dangerous - will result in infinite calls because it will keep checking for a winner.
-  //  * @param playerName
-  //  * @param playerFleet
-  //  * @param opponentName
-  //  * @param opponentFleet
-  //  * @returns
-  //  */
-  // function calculateWinner(
-  //   playerName: string,
-  //   playerFleet: Fleet,
-  //   opponentName?: string,
-  //   opponentFleet?: Fleet
-  // ) {
-  //   const winner = playerFleet.every((fleetPosition) => fleetPosition.targeted) ? `${playerName} wins!`: null;
-  //   return winner
-  //     ? winner
-  //     : calculateWinner("Computer", opponentFleet as Fleet);
-  // }
+  const untargetedCoordinates = playerCoordinates.filter(
+    (coordinate) => !coordinate.targeted && !coordinate.isLabel
+  );
+  const playerDestroyedShipCoordinates = playerCoordinates.filter(
+    (coordinate) => coordinate.occupied && coordinate.targeted
+  );
+  const computerDestroyedShipCoordinates = computerCoordinates.filter(
+    (coordinate) => coordinate.occupied && coordinate.targeted
+  );
 
-  // const winner = calculateWinner();
+  const calculateWinner = () => {
+    if (playerDestroyedShipCoordinates.length === 17) return 'Computer wins!';
+    if (computerDestroyedShipCoordinates.length === 17) return 'Player wins';
+    return null;
+  }
+
+  const winner = calculateWinner();
 
   return (
     <div>
@@ -49,25 +44,29 @@ const Game = () => {
           setGameStart={setGameStart}
         />
       )}
-      {gameStart && 
-      
-      <div>
-        <Board 
-          coordinates={playerCoordinates}
-          fleet={playerFleet}
-          isPlayerCoordinate={true}
-          setCoordinates={setPlayerCoordinates}
-          setFleet={setPlayerFleet}
-        />
-        <Board 
-          coordinates={computerCoordinates}
-          fleet={computerFleet}
-          isPlayerCoordinate={false}
-          setCoordinates={setComputerCoordinates}
-          setFleet={setPlayerFleet}
-        />
-      </div>
-      }
+      {gameStart && (
+        <div>
+          <Board
+            coordinates={playerCoordinates}
+            fleet={playerFleet}
+            isPlayerCoordinate={true}
+            setCoordinates={setPlayerCoordinates}
+            setFleet={setPlayerFleet}
+          />
+          <Board
+            coordinates={computerCoordinates}
+            fleet={computerFleet}
+            playerCoordinates={playerCoordinates}
+            isPlayerCoordinate={false}
+            untargetedCoordinates={untargetedCoordinates}
+            setCoordinates={setComputerCoordinates}
+            setPlayerCoordinates={setPlayerCoordinates}
+            setFleet={setPlayerFleet}
+            winner={winner}
+          />
+          {winner && <h1>{winner}</h1>}
+        </div>
+      )}
     </div>
   );
 };
