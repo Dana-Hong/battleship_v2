@@ -5,21 +5,33 @@ type AxisSelectorProps = {
     onAxisSelect: (axis: Axis) => void;
 }
 const AxisSelector = ({ currentAxis, onAxisSelect }: AxisSelectorProps) => {
+    const axisSelectButtonStyles = (axis: Axis) => {
+        if (currentAxis === axis) return 'bg-sky-600';
+    }
+
     return (
         <div>
             <Button
-                axis="Y"
-                currentAxis={currentAxis}
-                onAxisSelect={onAxisSelect}
+                className={axisSelectButtonStyles('Y')}
             >
-                Switch to Y Axis
+                <button 
+                    onClick={() => {
+                        onAxisSelect("Y");
+                    }}
+                >
+                    Y Axis
+                </button>
             </Button>
             <Button
-                axis="X"
-                currentAxis={currentAxis}
-                onAxisSelect={onAxisSelect}
+                className={axisSelectButtonStyles('X')}
             >
-                Switch to X Axis
+                <button
+                    onClick={() => {
+                        onAxisSelect("X");
+                    }}
+                >
+                    X Axis
+                </button>
             </Button>
         </div>
     )

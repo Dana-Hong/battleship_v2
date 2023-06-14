@@ -7,6 +7,9 @@ type ShipSelectorProps = {
 }
 
 const ShipSelector = ({ currentShip, onShipSelect }: ShipSelectorProps) => {
+    const shipSelectButtonStyles = (ship: ShipNames) => {
+        if (currentShip === ship) return 'bg-sky-600';
+    }
     /**
      * I need to be passed props in order to select a ship to place. 
      */
@@ -14,39 +17,59 @@ const ShipSelector = ({ currentShip, onShipSelect }: ShipSelectorProps) => {
         <div className="flex">
            <p>Select Ship</p> 
             <Button
-                ship={'carrier'}
-                currentShip={currentShip}
-                onShipSelect={onShipSelect}
+                className={shipSelectButtonStyles('carrier')}
             >
-                Carrier
+                <button
+                    onClick={() => {
+                        onShipSelect('carrier');
+                    }} 
+                >
+                    Carrier
+                </button>
             </Button>
             <Button
-                ship={'battleship'}
-                currentShip={currentShip}
-                onShipSelect={onShipSelect}
+                className={shipSelectButtonStyles('battleship')}
             >
-                Battleship
+                <button
+                    onClick={() => {
+                        onShipSelect('battleship');
+                    }} 
+                >
+                    Battleship
+                </button>
             </Button>
             <Button
-                ship={'destroyer'}
-                currentShip={currentShip}
-                onShipSelect={onShipSelect}
+                className={shipSelectButtonStyles('destroyer')}
             >
-                Destroyer
+                <button
+                    onClick={() => {
+                        onShipSelect('destroyer');
+                    }} 
+                >
+                    Destroyer
+                </button>
             </Button>
             <Button
-                ship={'submarine'}
-                currentShip={currentShip}
-                onShipSelect={onShipSelect}
+                className={shipSelectButtonStyles('submarine')}
             >
-                Submarine
+                <button
+                    onClick={() => {
+                        onShipSelect('submarine');
+                    }} 
+                >
+                    Submarine
+                </button>
             </Button>
             <Button
-                ship={'patrolboat'}
-                currentShip={currentShip}
-                onShipSelect={onShipSelect}
+                className={shipSelectButtonStyles('patrolboat')}
             >
-                Patrol Boat
+                <button
+                    onClick={() => {
+                        onShipSelect('patrolboat');
+                    }} 
+                >
+                    Patrol Boat
+                </button>
             </Button>
         </div>
     )
