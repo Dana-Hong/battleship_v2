@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { generateCoordinates, generateFleet, generatePotentialShipCoordinates } from "../utils";
+import { useEffect } from "react";
+import { generateFleet, generatePotentialShipCoordinates } from "../utils";
 import Coordinate from "./Coordinate";
 import { Axis, CoordinateType, Fleet, ShipNames } from "../types";
 
