@@ -1,4 +1,3 @@
-import Battleship from "../assets/battleship.svg";
 import { Axis, CoordinateType, Fleet, ShipNames } from "../types";
 
 type SetupCoordinateEventHandlers = {
