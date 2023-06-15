@@ -1,4 +1,5 @@
 import { Axis, CoordinateType, Fleet, ShipNames } from "../types";
+import Battleship from "../assets/battleship.svg";
 import TargetedIcon from "../assets/TargetedIcon";
 import FireIcon from "../assets/FireIcon";
 import TargetIcon from "../assets/TargetIcon";
