@@ -37,7 +37,7 @@ const Coordinate = ({
 
   return (
     <div
-      className={`${!isPlayerCoordinate && !isLabel && "cursor-pointer"} ${generateCoordinateStyles()} flex justify-center items-center border h-10 w-10 `}
+      className={`${!isPlayerCoordinate && !isLabel && "cursor-pointer"} ${generateCoordinateStyles()} flex justify-center items-center border min-[375px]:h-8 min-[375px]:w-8 sm:h-10 sm:w-10 lg:w-12 lg:h-12`}
       onClick={() => {
         if (isLabel || targeted || winner) return;
           onClick(id);

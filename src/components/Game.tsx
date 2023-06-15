@@ -26,10 +26,10 @@ const Game = () => {
   );
 
   const calculateWinner = () => {
-    if (playerDestroyedShipCoordinates.length === 17) return 'Computer wins!';
-    if (computerDestroyedShipCoordinates.length === 17) return 'Player wins';
+    if (playerDestroyedShipCoordinates.length === 17) return "Computer wins!";
+    if (computerDestroyedShipCoordinates.length === 17) return "Player wins";
     return null;
-  }
+  };
 
   const winner = calculateWinner();
 
@@ -45,26 +45,34 @@ const Game = () => {
         />
       )}
       {gameStart && (
-        <div>
-          <Board
-            coordinates={playerCoordinates}
-            fleet={playerFleet}
-            isPlayerCoordinate={true}
-            setCoordinates={setPlayerCoordinates}
-            setFleet={setPlayerFleet}
-          />
-          <Board
-            coordinates={computerCoordinates}
-            fleet={computerFleet}
-            playerCoordinates={playerCoordinates}
-            isPlayerCoordinate={false}
-            untargetedCoordinates={untargetedCoordinates}
-            setCoordinates={setComputerCoordinates}
-            setPlayerCoordinates={setPlayerCoordinates}
-            setFleet={setPlayerFleet}
-            winner={winner}
-          />
-          {winner && <h1>{winner}</h1>}
+        <div className="w-full max-w-7xl flex flex-col">
+          {winner && <p className="text-center text-3xl">{winner}</p>}
+          <div className="flex xl:flex-row items-center justify-evenly gap-8">
+            <div>
+              <p className="text-center text-xl py-8">Player Board</p>
+              <Board
+                coordinates={playerCoordinates}
+                fleet={playerFleet}
+                isPlayerCoordinate={true}
+                setCoordinates={setPlayerCoordinates}
+                setFleet={setPlayerFleet}
+              />
+            </div>
+            <div>
+              <p className="text-center text-xl py-8">Computer Board</p>
+              <Board
+                coordinates={computerCoordinates}
+                fleet={computerFleet}
+                playerCoordinates={playerCoordinates}
+                isPlayerCoordinate={false}
+                untargetedCoordinates={untargetedCoordinates}
+                setCoordinates={setComputerCoordinates}
+                setPlayerCoordinates={setPlayerCoordinates}
+                setFleet={setPlayerFleet}
+                winner={winner}
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>
