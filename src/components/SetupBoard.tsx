@@ -71,7 +71,7 @@ const SetupBoard = ({
     ));
   }
 
-  return <div className="grid grid-cols-11 min-[375px]:max-w-[352px] sm:max-w-[440px] lg:max-w-[528px]">{generateUIRows()}</div>;
+  return <div className="grid grid-cols-11 min-[375px]:max-w-[352px] sm:max-w-[440px] lg:max-w-[528px] bg-board bg-cover">{generateUIRows()}</div>;
 };
 
 export default SetupBoard;

@@ -29,6 +29,11 @@ const GameSetup = ({
   const [currentAxis, setCurrentAxis] = useState<Axis>("X");
   const [currentShip, setCurrentShip] = useState<ShipNames>("carrier");
 
+  const resetBoard = () => {
+    setPlayerFleet([]);
+    setPlayerCoordinates((pc) => pc.map((coordinate) => ({ ...coordinate, occupied: false })));
+  };
+
   const generateRandomFleet = () => {
     const newFleet = generateFleet();
     setPlayerFleet(newFleet);
@@ -87,30 +92,37 @@ const GameSetup = ({
       />
       <div className="flex flex-col gap-4 w-full min-[375px]:max-w-[352px] sm:max-w-[440px] lg:max-w-[528px]">
         <div className="flex gap-6">
-          <div className="flex flex-col gap-3 grow">
+          <div className="flex flex-col gap-3 grow justify-between">
             <AxisSelector currentAxis={currentAxis} onClick={handleAxisSelect} />
-            <Button>
-              <button className="w-full" onClick={() => generateRandomFleet()}>
-                Random Placement
-              </button>
-            </Button>
+            <div className="flex flex-col gap-3">
+              <Button>
+                <button className="w-full" onClick={() => generateRandomFleet()}>
+                  Random Placement
+                </button>
+              </Button>
+              <Button>
+                <button className="w-full" onClick={() => resetBoard()}>
+                  Reset Board
+                </button>
+              </Button>
+            </div>
           </div>
           <ShipSelector currentShip={currentShip} onClick={handleShipSelect} />
         </div>
-          <Button className="max-w-xs mx-auto">
-            <button
-              className={`${fleet.length === 17 ? 'text-neutral-200': 'text-neutral-800'}`}
-              onClick={() => {
-                if (fleet.length !== 17) return; 
-                setPlayerCoordinates((prevCoordinates) =>
-                  prevCoordinates.map((coordinate) => ({ ...coordinate, hovered: false }))
-                );
-                setGameStart(true);
-              }}
-            >
-              Start Game
-            </button>
-          </Button>
+        <Button className="max-w-xs mx-auto">
+          <button
+            className={`${fleet.length === 17 ? "text-neutral-200" : "text-neutral-800"}`}
+            onClick={() => {
+              if (fleet.length !== 17) return;
+              setPlayerCoordinates((prevCoordinates) =>
+                prevCoordinates.map((coordinate) => ({ ...coordinate, hovered: false }))
+              );
+              setGameStart(true);
+            }}
+          >
+            Start Game
+          </button>
+        </Button>
       </div>
     </div>
   );

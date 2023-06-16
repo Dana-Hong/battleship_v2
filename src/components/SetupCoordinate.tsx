@@ -25,15 +25,15 @@ const SetupCoordinate = ({
   onMouseEnter,
 }: SetupCoordinateProps) => {
   const generateSetupCoordinateStyles = () => {
-    if (isLabel) return "bg-blue-500";
-    if (isInvalidPlacement) return "bg-red-500 cursor-not-allowed";
-    if (hovered) return "bg-green-500";
-    if (occupied) return "bg-gray-600";
+    if (isLabel) return "bg-neutral-700";
+    if (isInvalidPlacement) return "bg-red-700 opacity-70 cursor-not-allowed";
+    if (hovered) return "bg-neutral-600";
+    if (occupied) return "bg-neutral-600";
   };
 
   return (
     <div
-      className={`cursor-pointer ${generateSetupCoordinateStyles()} flex justify-center items-center border min-[375px]:h-8 min-[375px]:w-8 sm:h-10 sm:w-10 lg:w-12 lg:h-12`}
+      className={`cursor-pointer ${generateSetupCoordinateStyles()} flex justify-center items-center border border-neutral-300 min-[375px]:h-8 min-[375px]:w-8 sm:h-10 sm:w-10 lg:w-12 lg:h-12`}
       onClick={() => {
         if (isLabel) return;
         onClick(currentShip, id, currentAxis, fleet);

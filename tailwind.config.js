@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "board": "url('/public/board-bg.jpg')"
+      },
+      fontFamily: {
+        "blackOpsOne": ["Black Ops One", "sans-serif"]
+      }
+    },
   },
   plugins: [],
 }
