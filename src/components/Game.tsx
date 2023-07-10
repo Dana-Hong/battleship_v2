@@ -3,6 +3,7 @@ import Board from "./Board";
 import GameSetup from "./GameSetup";
 import { generateCoordinates, generateFleet } from "../utils";
 import { CoordinateType, Fleet } from "../types";
+import Button from "./Button";
 
 const Game = () => {
   const [gameStart, setGameStart] = useState(false);
@@ -46,8 +47,21 @@ const Game = () => {
       )}
       {gameStart && (
         <div className="w-full max-w-7xl flex flex-col">
-          {winner && <p className="text-center text-3xl">{winner}</p>}
-          <div className="flex xl:flex-row items-center justify-evenly gap-8">
+          {winner && 
+          <div
+            className={`absolute top-0 left-0 right-0 bottom-0 z-10 bg-neutral-900 bg-opacity-90 self-center flex flex-col gap-4 p-10 rounded-md items-center justify-center `}
+          >
+            <div className={`${ winner ? "scale-100" : "" } transition-transform flex flex-col p-8 lg:p-14 rounded-lg bg-neutral-500 gap-4`}>
+            {winner && <p className="text-center text-3xl">{winner}!</p>}
+            <Button className="w-full max-w-xs text-center mx-auto">
+              <button onClick={() => setGameStart(false)} className="w-full h-full">
+              Play again?
+              </button>
+            </Button>
+            </div>
+          </div>
+          }
+          <div className="flex flex-col xl:flex-row items-center justify-evenly gap-8">
             <div>
               <p className="text-center text-xl py-8">Player Board</p>
               <Board

@@ -24,8 +24,6 @@ type CoordinateProps = CoordinateType &
     patrolBoatBowCoord: ShipBowCoord;
     destroyedShips: ShipNames[] | null;
     isPlayerCoordinate: boolean;
-    coordinates: CoordinateType[] | null;
-    fleet: Fleet;
     winner?: string | null;
   };
 
@@ -37,10 +35,7 @@ const Coordinate = ({
   destroyerBowCoord,
   submarineBowCoord,
   patrolBoatBowCoord,
-  fleet,
-  coordinates,
   destroyedShips,
-  // isInvalidPlacement,
   isPlayerCoordinate,
   targeted,
   occupied,
@@ -50,10 +45,8 @@ const Coordinate = ({
   onMouseEnter,
 }: CoordinateProps) => {
   function generateCoordinateStyles() {
-    if (isLabel) return "bg-blue-500";
-    // if (isInvalidPlacement) return "bg-red-500 cursor-not-allowed";
+    if (isLabel) return "bg-neutral-900";
     if (hovered && isPlayerCoordinate) return "bg-green-500";
-    // if (occupied && isPlayerCoordinate) return "bg-gray-600";
     return "";
   }
 
@@ -117,7 +110,7 @@ const Coordinate = ({
     <div
       className={`${
         !isPlayerCoordinate && !isLabel ? "cursor-pointer" : ""
-      } ${generateCoordinateStyles()} relative flex justify-center items-center border min-[375px]:h-8 min-[375px]:w-8 sm:h-10 sm:w-10 lg:w-12 lg:h-12`}
+      } ${generateCoordinateStyles()} relative flex justify-center items-center border border-neutral-400 min-[375px]:h-8 min-[375px]:w-8 sm:h-10 sm:w-10 lg:w-12 lg:h-12`}
       onClick={() => {
         if (isLabel || targeted || winner) return;
         onClick(id);
@@ -127,11 +120,11 @@ const Coordinate = ({
         onMouseEnter(id);
       }}
     >
-        { displayShipSVG("carrier") }
-        { displayShipSVG("battleship") }
-        { displayShipSVG("destroyer") }
-        { displayShipSVG("submarine") }
-        { displayShipSVG("patrolboat") }
+      {displayShipSVG("carrier")}
+      {displayShipSVG("battleship")}
+      {displayShipSVG("destroyer")}
+      {displayShipSVG("submarine")}
+      {displayShipSVG("patrolboat")}
       {hovered && !isPlayerCoordinate && <TargetIcon className="absolute h-6 w-6 fill-red-600" />}
       {targeted && !occupied && <TargetedIcon className="h-4 w-4 fill-neutral-100" />}
       {targeted && occupied && <FireIcon className="absolute h-6 w-6 fill-red-500" />}

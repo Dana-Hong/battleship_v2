@@ -47,7 +47,7 @@ const SetupCoordinate = ({
 
   return (
     <div
-      className={`cursor-pointer ${generateSetupCoordinateStyles()} relative flex justify-center items-center border border-neutral-300 min-[375px]:h-8 min-[375px]:w-8 sm:h-10 sm:w-10 lg:w-12 lg:h-12`}
+      className={`cursor-pointer ${generateSetupCoordinateStyles()} relative flex justify-center items-center border border-neutral-400 min-[375px]:h-8 min-[375px]:w-8 sm:h-10 sm:w-10 lg:w-12 lg:h-12`}
       onClick={() => {
         if (isLabel) return;
         onClick(currentShip, id, currentAxis, fleet);

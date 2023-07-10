@@ -110,12 +110,12 @@ const GameSetup = ({
             <AxisSelector currentAxis={currentAxis} onClick={handleAxisSelect} />
             <div className="flex flex-col gap-3">
               <Button>
-                <button className="w-full" onClick={() => generateRandomFleet()}>
+                <button className="w-full h-full" onClick={() => generateRandomFleet()}>
                   Random Placement
                 </button>
               </Button>
               <Button>
-                <button className="w-full" onClick={() => resetBoard()}>
+                <button className="w-full h-full" onClick={() => resetBoard()}>
                   Reset Board
                 </button>
               </Button>

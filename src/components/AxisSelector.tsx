@@ -15,7 +15,7 @@ const AxisSelector = ({ currentAxis, onClick }: AxisSelectorProps) => {
       <div className="flex flex-col gap-3">
         <Button className={`${axisSelectButtonStyles("X")}`}>
           <button
-            className="w-full mx-auto"
+            className="w-full h-full mx-auto"
             onClick={() => {
               onClick("X");
             }}
@@ -25,7 +25,7 @@ const AxisSelector = ({ currentAxis, onClick }: AxisSelectorProps) => {
         </Button>
         <Button className={`${axisSelectButtonStyles("Y")}`}>
           <button
-            className="w-full mx-auto"
+            className="w-full h-full mx-auto"
             onClick={() => {
               onClick("Y");
             }}
