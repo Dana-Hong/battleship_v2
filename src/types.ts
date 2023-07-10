@@ -18,7 +18,8 @@ export type Fleet = FleetCoordinate[];
 export type CoordinateType = {
   id: CoordinateId;
   targeted: boolean;
-  occupied: boolean;
+  // occupied: boolean;
+  occupied: ShipNames | null;
   isLabel: boolean;
   isInvalidPlacement: boolean;
   hovered: boolean;

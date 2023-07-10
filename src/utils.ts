@@ -17,7 +17,8 @@ export function generateCoordinates(fleetPosition?: Fleet) {
     for (let j = 0; j < X_COORDINATES.length; j++) {
       const coordinate: CoordinateType = {
         targeted: false,
-        occupied: false,
+        // occupied: false,
+        occupied: null,
         isLabel: false,
         id: "",
         hovered: false,
@@ -33,13 +34,15 @@ export function generateCoordinates(fleetPosition?: Fleet) {
       } else {
         const coordinateId = `${X_COORDINATES[j]}${Y_COORDINATES[i]}`;
         coordinate.id = coordinateId;
-        coordinate.occupied = fleetPosition
-          ? fleetPosition
-              .map((coordinate) => coordinate.id)
-              .includes(coordinateId)
-            ? true
-            : false
-          : false;
+        const ship = fleetPosition?.find(coordinate => coordinate.id === coordinateId);
+        coordinate.occupied = ship?.ship ?? null;
+        // coordinate.occupied = fleetPosition
+        //   ? fleetPosition
+        //       .map((coordinate) => coordinate.id)
+        //       .includes(coordinateId)
+        //     ? true
+        //     : false
+        //   : false;
       }
 
       coordinateIds.push(coordinate);

@@ -1,5 +1,6 @@
 import Coordinate from "./Coordinate";
-import { CoordinateType, Fleet } from "../types";
+import { Axis, CoordinateType, Fleet, ShipNames } from "../types";
+import { SHIP_LENGTH_MAP, SHIP_NAMES } from "../constants/ships";
 
 type BoardProps = {
   fleet: Fleet;
@@ -35,7 +36,7 @@ const Board = ({
   };
 
   const handleClick = (id: string) => {
-    const targetedCoordinate = coordinates.filter(coordinate => coordinate.id)[0];
+    const targetedCoordinate = coordinates.filter(coordinate => coordinate.id === id)[0];
     if (targetedCoordinate.targeted) return 'Already targeted';
     setFleet(
       fleet.map((ship) =>
@@ -67,12 +68,44 @@ const Board = ({
     }
   };
 
+  const getShipAxis = (coordinates: CoordinateType[], ship: ShipNames): Axis | null => {
+    if (!fleet.length) return null;
+    const shipPos = coordinates.filter((coordinate) => coordinate.occupied === ship);
+    const axis = shipPos[0]?.id[0] === shipPos[1]?.id[0] ? "Y" : "X";
+
+    return axis;
+  };
+
+  const getShipBowCoordinate = (coordinates: CoordinateType[], ship: ShipNames) => {
+    if (!coordinates) return { id: "", axis: null}
+    const id = coordinates?.filter(coordinates => coordinates.occupied === ship)[0]?.id ?? "";
+    const axis = getShipAxis(coordinates, ship);
+    
+    return {
+      id: id,
+      axis: axis
+    }
+  }
+
+  const getDestroyedShips = () => {
+    if (isPlayerCoordinate) return null;
+    return SHIP_NAMES.filter(shipname => coordinates.filter(coordinate => coordinate.occupied === shipname && coordinate.targeted).length === SHIP_LENGTH_MAP[shipname])
+
+  }
+
   const generateUIRows = () => {
     return coordinates.map((coordinate) => (
       <Coordinate
         key={coordinate.id}
+        carrierBowCoord={getShipBowCoordinate(coordinates, "carrier")}
+        battleshipBowCoord={getShipBowCoordinate(coordinates, "battleship")}
+        destroyerBowCoord={getShipBowCoordinate(coordinates, "destroyer")}
+        submarineBowCoord={getShipBowCoordinate(coordinates, "submarine")}
+        patrolBoatBowCoord={getShipBowCoordinate(coordinates, "patrolboat")}
+        destroyedShips={getDestroyedShips()}
         {...coordinate}
         fleet={fleet}
+        coordinates={coordinates}
         isPlayerCoordinate={isPlayerCoordinate}
         onClick={handleClick}
         onMouseEnter={handleHover}

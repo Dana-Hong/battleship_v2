@@ -31,7 +31,7 @@ const GameSetup = ({
 
   const resetBoard = () => {
     setPlayerFleet([]);
-    setPlayerCoordinates((pc) => pc.map((coordinate) => ({ ...coordinate, occupied: false })));
+    setPlayerCoordinates((pc) => pc.map((coordinate) => ({ ...coordinate, occupied: null }))); // occupied: false })));
   };
 
   const generateRandomFleet = () => {
@@ -41,15 +41,29 @@ const GameSetup = ({
     const fleetCoordinateIds = newFleet.map((fleetCoordinate) => fleetCoordinate.id);
 
     setPlayerCoordinates((prevCoordinates) =>
-      prevCoordinates.map((coordinate) =>
-        coordinate.occupied ? { ...coordinate, occupied: false } : coordinate
+      prevCoordinates.map(
+        (coordinate) => (coordinate.occupied ? { ...coordinate, occupied: null } : coordinate) // occupied: false } : coordinate
       )
     );
-    setPlayerCoordinates((prevCoordinates) =>
-      prevCoordinates.map((coordinate) =>
-        fleetCoordinateIds.includes(coordinate.id) ? { ...coordinate, occupied: true } : coordinate
-      )
-    );
+
+    setPlayerCoordinates((prevCoordinates) => {
+      return prevCoordinates.map((coordinate) => {
+        const coordinateId = coordinate.id;
+        // const shipNameAtCoordinate = newFleet.find(fleetCoordinate => fleetCoordinate.id === coordinateId)?.ship ?? null;
+        // fleetCoordinateIds.includes(coordinateId) ? { ...coordinate, occupied: shipNameAtCoordinate } : coordinate;
+        const ship =
+          newFleet.find((fleetCoordinate) => fleetCoordinate.id === coordinateId)?.ship ?? null;
+        return fleetCoordinateIds.includes(coordinateId)
+          ? { ...coordinate, occupied: ship }
+          : coordinate;
+      });
+    });
+
+    // setPlayerCoordinates((prevCoordinates) =>
+    //   prevCoordinates.map((coordinate) =>
+    //     fleetCoordinateIds.includes(coordinate.id) ? { ...coordinate, occupied: true } : coordinate
+    //   )
+    // );
   };
 
   const handleShipPlacement = (ship: ShipNames, id: string, axis: Axis, fleet: Fleet) => {
