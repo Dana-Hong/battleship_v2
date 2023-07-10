@@ -21,7 +21,12 @@ const SetupBoard = ({
   setCoordinates,
 }: SetupBoardProps) => {
   function handleHover(ship: ShipNames, id: string, axis: Axis, fleet: Fleet) {
-    const highlightedCoordinates = generatePotentialShipCoordinates(ship, id, axis, fleet);
+    const highlightedCoordinates = generatePotentialShipCoordinates(
+      ship,
+      id,
+      axis,
+      fleet
+    );
     if (!highlightedCoordinates.valid) {
       setCoordinates((prevCoordinates) =>
         prevCoordinates.map((coordinate) =>
@@ -57,10 +62,50 @@ const SetupBoard = ({
     }
   }
 
+  const getShipAxis = (fleet: Fleet, ship: ShipNames): Axis | null => {
+    if (!fleet.length) return null;
+    const shipPos = fleet.filter((positions) => positions.ship === ship);
+    const axis = shipPos[0]?.id[0] === shipPos[1]?.id[0] ? "Y" : "X";
+
+    return axis;
+  };
+
+  const carrierBowCoord = {
+    id: fleet?.filter((positions) => positions.ship === "carrier")[0]?.id ?? "",
+    axis: getShipAxis(fleet, "carrier"),
+  };
+  const battleshipBowCoord = {
+    id:
+      fleet?.filter((positions) => positions.ship === "battleship")[0]?.id ??
+      "",
+    axis: getShipAxis(fleet, "battleship"),
+  };
+  const destroyerBowCoord = {
+    id:
+      fleet?.filter((positions) => positions.ship === "destroyer")[0]?.id ?? "",
+    axis: getShipAxis(fleet, "destroyer"),
+  };
+  const submarineBowCoord = {
+    id:
+      fleet?.filter((positions) => positions.ship === "submarine")[0]?.id ?? "",
+    axis: getShipAxis(fleet, "submarine"),
+  };
+  const patrolBoatBowCoord = {
+    id:
+      fleet?.filter((positions) => positions.ship === "patrolboat")[0]?.id ??
+      "",
+    axis: getShipAxis(fleet, "patrolboat"),
+  };
+
   function generateUIRows() {
     return coordinates.map((coordinate) => (
       <SetupCoordinate
         key={coordinate.id}
+        carrierBowCoord={carrierBowCoord}
+        battleshipBowCoord={battleshipBowCoord}
+        destroyerBowCoord={destroyerBowCoord}
+        submarineBowCoord={submarineBowCoord}
+        patrolBoatBowCoord={patrolBoatBowCoord}
         currentAxis={currentAxis}
         currentShip={currentShip}
         {...coordinate}
@@ -71,7 +116,11 @@ const SetupBoard = ({
     ));
   }
 
-  return <div className="grid grid-cols-11 min-[375px]:max-w-[352px] sm:max-w-[440px] lg:max-w-[528px] bg-board bg-cover">{generateUIRows()}</div>;
+  return (
+    <div className="grid grid-cols-11 min-[375px]:max-w-[352px] sm:max-w-[440px] lg:max-w-[528px] bg-board bg-cover">
+      {generateUIRows()}
+    </div>
+  );
 };
 
 export default SetupBoard;
