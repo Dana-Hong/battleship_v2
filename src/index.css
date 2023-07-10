@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'Black Ops One';
-    src: url('/public/fonts/BlackOpsOne-Regular.ttf') format('truetype');
+  font-family: "Black Ops One";
+  src: url("/fonts/BlackOpsOne-Regular.ttf") format("truetype");
 }
