@@ -35,7 +35,6 @@ const SetupCoordinate = ({
   id,
   isInvalidPlacement,
   isLabel,
-  occupied,
   onClick,
   onMouseEnter,
 }: SetupCoordinateProps) => {

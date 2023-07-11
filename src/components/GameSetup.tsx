@@ -49,21 +49,12 @@ const GameSetup = ({
     setPlayerCoordinates((prevCoordinates) => {
       return prevCoordinates.map((coordinate) => {
         const coordinateId = coordinate.id;
-        // const shipNameAtCoordinate = newFleet.find(fleetCoordinate => fleetCoordinate.id === coordinateId)?.ship ?? null;
-        // fleetCoordinateIds.includes(coordinateId) ? { ...coordinate, occupied: shipNameAtCoordinate } : coordinate;
-        const ship =
-          newFleet.find((fleetCoordinate) => fleetCoordinate.id === coordinateId)?.ship ?? null;
+        const ship = newFleet.find((fleetCoordinate) => fleetCoordinate.id === coordinateId)?.ship ?? null;
         return fleetCoordinateIds.includes(coordinateId)
           ? { ...coordinate, occupied: ship }
           : coordinate;
       });
     });
-
-    // setPlayerCoordinates((prevCoordinates) =>
-    //   prevCoordinates.map((coordinate) =>
-    //     fleetCoordinateIds.includes(coordinate.id) ? { ...coordinate, occupied: true } : coordinate
-    //   )
-    // );
   };
 
   const handleShipPlacement = (ship: ShipNames, id: string, axis: Axis, fleet: Fleet) => {

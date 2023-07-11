@@ -81,42 +81,10 @@ const SetupBoard = ({
 
   }
 
-  // const carrierBowCoord = {
-  //   id: fleet?.filter((positions) => positions.ship === "carrier")[0]?.id ?? "",
-  //   axis: getShipAxis(fleet, "carrier"),
-  // };
-  // const battleshipBowCoord = {
-  //   id:
-  //     fleet?.filter((positions) => positions.ship === "battleship")[0]?.id ??
-  //     "",
-  //   axis: getShipAxis(fleet, "battleship"),
-  // };
-  // const destroyerBowCoord = {
-  //   id:
-  //     fleet?.filter((positions) => positions.ship === "destroyer")[0]?.id ?? "",
-  //   axis: getShipAxis(fleet, "destroyer"),
-  // };
-  // const submarineBowCoord = {
-  //   id:
-  //     fleet?.filter((positions) => positions.ship === "submarine")[0]?.id ?? "",
-  //   axis: getShipAxis(fleet, "submarine"),
-  // };
-  // const patrolBoatBowCoord = {
-  //   id:
-  //     fleet?.filter((positions) => positions.ship === "patrolboat")[0]?.id ??
-  //     "",
-  //   axis: getShipAxis(fleet, "patrolboat"),
-  // };
-
   function generateUIRows() {
     return coordinates.map((coordinate) => (
       <SetupCoordinate
         key={coordinate.id}
-        // carrierBowCoord={carrierBowCoord}
-        // battleshipBowCoord={battleshipBowCoord}
-        // destroyerBowCoord={destroyerBowCoord}
-        // submarineBowCoord={submarineBowCoord}
-        // patrolBoatBowCoord={patrolBoatBowCoord}
         carrierBowCoord={getShipBowCoordinate(fleet, "carrier")}
         battleshipBowCoord={getShipBowCoordinate(fleet, "battleship")}
         destroyerBowCoord={getShipBowCoordinate(fleet, "destroyer")}
