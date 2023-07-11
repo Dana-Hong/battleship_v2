@@ -5,6 +5,7 @@ export default {
     extend: {
       backgroundImage: {
         board: "url('/board-bg.jpg')",
+        battleship: "url('/battleship-bg.jpg')"
       },
       fontFamily: {
         blackOpsOne: ["Black Ops One", "sans-serif"],

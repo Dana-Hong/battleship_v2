@@ -39,7 +39,7 @@ const SetupCoordinate = ({
   onMouseEnter,
 }: SetupCoordinateProps) => {
   const generateSetupCoordinateStyles = () => {
-    if (isLabel) return "bg-neutral-700";
+    if (isLabel) return "bg-neutral-800";
     if (isInvalidPlacement) return "bg-red-700 opacity-70 cursor-not-allowed";
     if (hovered) return "bg-green-600 opacity-50";
   };

@@ -5,8 +5,15 @@ import { generateCoordinates, generateFleet } from "../utils";
 import { CoordinateType, Fleet } from "../types";
 import Button from "./Button";
 
-const Game = () => {
-  const [gameStart, setGameStart] = useState(false);
+const Game = ({
+  gameStart,
+  setGameStart,
+  setIsBoardPlacement
+}: {
+  gameStart: boolean;
+  setGameStart: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsBoardPlacement: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [computerFleet] = useState(generateFleet);
   const [computerCoordinates, setComputerCoordinates] = useState(
     generateCoordinates(computerFleet)
@@ -34,6 +41,12 @@ const Game = () => {
 
   const winner = calculateWinner();
 
+  const handlePlayAgain = () => {
+    setIsBoardPlacement(bp => !bp);
+    setGameStart(gs => !gs);
+  };
+
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
       <h1 className="py-6 sm:py-12 lg:py-20 text-5xl">Battleship!</h1>
@@ -50,7 +63,7 @@ const Game = () => {
         <div className="w-full max-w-7xl flex flex-col">
           {winner && (
             <div
-              className={`absolute top-0 left-0 right-0 bottom-0 z-10 bg-neutral-900 bg-opacity-90 self-center flex flex-col gap-4 p-10 rounded-md items-center justify-center `}
+              className={`fixed top-0 left-0 right-0 bottom-0 z-10 bg-neutral-900 bg-opacity-90 self-center flex flex-col gap-4 p-10 rounded-md items-center justify-center `}
             >
               <div
                 className={`${
@@ -59,7 +72,7 @@ const Game = () => {
               >
                 {winner && <p className="text-center text-3xl">{winner}!</p>}
                 <Button className="w-full max-w-xs text-center mx-auto">
-                  <button onClick={() => setGameStart(false)} className="w-full h-full">
+                  <button onClick={handlePlayAgain} className="w-full h-full">
                     Play again?
                   </button>
                 </Button>

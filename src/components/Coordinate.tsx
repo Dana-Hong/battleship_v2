@@ -45,7 +45,7 @@ const Coordinate = ({
   onMouseEnter,
 }: CoordinateProps) => {
   function generateCoordinateStyles() {
-    if (isLabel) return "bg-neutral-900";
+    if (isLabel) return "bg-neutral-800";
     if (hovered && isPlayerCoordinate) return "bg-green-500";
     return "";
   }
